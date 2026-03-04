@@ -8,7 +8,9 @@ routines (CRUD), workout logging, and analytics.
 
 import json
 import os
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, session, redirect, url_for, flash
+from werkzeug.security import generate_password_hash, check_password_hash
+from functools import wraps
 from flask_cors import CORS
 import database
 import random
@@ -100,6 +102,7 @@ def get_exercise_priority(ex, recent_ids):
 # App Configuration
 # ---------------------------------------------------------------------------
 app = Flask(__name__)
+app.secret_key = "fitforge_secure_key_123" # In production, use environment variable
 CORS(app)  # Enable Cross-Origin requests for the API
 
 # Absolute path to the data directory
@@ -121,13 +124,85 @@ def load_json(filename):
 
 
 # ---------------------------------------------------------------------------
+# Middleware: Authentication
+# ---------------------------------------------------------------------------
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+# ---------------------------------------------------------------------------
 # Page Routes — serve HTML templates
 # ---------------------------------------------------------------------------
 
 @app.route("/")
 @app.route("/home")
 def home():
+    if "user_id" in session:
+        return render_template("index.html", user=session.get("username"))
     return render_template("index.html")
+
+
+# ---------------------------------------------------------------------------
+# Auth Routes
+# ---------------------------------------------------------------------------
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
+        confirm_password = request.form.get("confirm_password", "")
+
+        if not username or not password:
+            flash("Username and password are required.", "error")
+            return render_template("signup.html")
+        
+        if len(password) < 6:
+            flash("Password must be at least 6 characters.", "error")
+            return render_template("signup.html")
+
+        if password != confirm_password:
+            flash("Passwords do not match.", "error")
+            return render_template("signup.html")
+
+        if database.get_user_by_username(username):
+            flash("Username already exists.", "error")
+            return render_template("signup.html")
+
+        password_hash = generate_password_hash(password)
+        database.create_user(username, password_hash)
+        flash("Signup successful! Please log in.", "success")
+        return redirect(url_for("login"))
+
+    return render_template("signup.html")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
+
+        user = database.get_user_by_username(username)
+        if user and check_password_hash(user["password_hash"], password):
+            session["user_id"] = user["id"]
+            session["username"] = user["username"]
+            return redirect(url_for("home"))
+        
+        flash("Invalid username or password.", "error")
+        return render_template("login.html")
+
+    return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
 
 
 @app.route("/calculators")
@@ -154,18 +229,21 @@ def nutrition():
 
 
 @app.route("/routines")
+@login_required
 def routines():
-    return render_template("routines.html")
+    return render_template("routines.html", user=session.get("username"))
 
 
 @app.route("/analytics")
+@login_required
 def analytics():
-    return render_template("analytics.html")
+    return render_template("analytics.html", user=session.get("username"))
 
 
 @app.route("/training")
+@login_required
 def training():
-    return render_template("training.html")
+    return render_template("training.html", user=session.get("username"))
 
 
 @app.route("/calisthenics")
@@ -174,13 +252,15 @@ def calisthenics():
 
 
 @app.route("/history")
+@login_required
 def history():
-    return render_template("history.html")
+    return render_template("history.html", user=session.get("username"))
 
 
 @app.route("/exercise/<exercise_id>/stats")
+@login_required
 def exercise_stats(exercise_id):
-    return render_template("exercise_stats.html", exercise_id=exercise_id)
+    return render_template("exercise_stats.html", exercise_id=exercise_id, user=session.get("username"))
 
 
 # ---------------------------------------------------------------------------
@@ -208,7 +288,8 @@ def api_exercises():
         exercises_data = [e for e in exercises_data if search in e["name"].lower()]
 
     # Apply Prioritization & Sorting
-    recent_ids = database.get_recent_exercises(limit=12)
+    user_id = session.get("user_id")
+    recent_ids = database.get_recent_exercises(user_id, limit=12) if user_id else []
     exercises_data.sort(key=lambda x: (get_exercise_priority(x, recent_ids), x["name"]))
 
     return jsonify(exercises_data)
@@ -516,8 +597,12 @@ def api_workout():
 # ---------------------------------------------------------------------------
 @app.route("/api/routines", methods=["GET", "POST"])
 def api_routines():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
     if request.method == "GET":
-        return jsonify(database.get_all_routines())
+        return jsonify(database.get_all_routines(user_id))
 
     # POST — create new routine
     data = request.get_json() or {}
@@ -525,7 +610,7 @@ def api_routines():
     if not name:
         return jsonify({"error": "Routine name is required."}), 400
     description = (data.get("description") or "").strip()
-    routine = database.create_routine(name, description)
+    routine = database.create_routine(name, user_id, description)
     return jsonify(routine), 201
 
 
@@ -534,9 +619,13 @@ def api_routines():
 # ---------------------------------------------------------------------------
 @app.route("/api/routines/<int:routine_id>", methods=["GET", "PUT", "DELETE"])
 def api_routine_detail(routine_id):
-    routine = database.get_routine(routine_id)
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    routine = database.get_routine(routine_id, user_id)
     if not routine:
-        return jsonify({"error": "Routine not found."}), 404
+        return jsonify({"error": "Routine not found or unauthorized."}), 404
 
     if request.method == "GET":
         return jsonify(routine)
@@ -545,13 +634,14 @@ def api_routine_detail(routine_id):
         data = request.get_json() or {}
         updated = database.update_routine(
             routine_id,
+            user_id,
             name=data.get("name"),
             description=data.get("description")
         )
         return jsonify(updated)
 
     if request.method == "DELETE":
-        database.delete_routine(routine_id)
+        database.delete_routine(routine_id, user_id)
         return jsonify({"message": "Routine deleted."})
 
 
@@ -660,8 +750,13 @@ def api_routine_suggest():
 # ---------------------------------------------------------------------------
 @app.route("/api/routines/<int:routine_id>/exercises", methods=["POST"])
 def api_routine_add_exercise(routine_id):
-    if not database.get_routine(routine_id):
-        return jsonify({"error": "Routine not found."}), 404
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    if not database.get_routine(routine_id, user_id):
+        return jsonify({"error": "Routine not found or unauthorized."}), 404
+
     data = request.get_json() or {}
     exercise_id = data.get("exercise_id", "")
     exercise_name = data.get("exercise_name", "")
@@ -669,6 +764,7 @@ def api_routine_add_exercise(routine_id):
         return jsonify({"error": "exercise_id and exercise_name are required."}), 400
     updated = database.add_exercise_to_routine(
         routine_id,
+        user_id,
         exercise_id=exercise_id,
         exercise_name=exercise_name,
         sets=data.get("sets", 3),
@@ -707,17 +803,25 @@ def api_routine_exercise(entry_id):
 # ---------------------------------------------------------------------------
 @app.route("/api/workout-logs", methods=["POST"])
 def api_log_workout():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
     data = request.get_json() or {}
     routine_id = data.get("routine_id")
     routine_name = (data.get("routine_name") or "").strip()
     if not routine_name:
         return jsonify({"error": "routine_name is required."}), 400
-    log = database.log_workout(routine_id, routine_name, notes=data.get("notes", ""))
+    log = database.log_workout(user_id, routine_id, routine_name, notes=data.get("notes", ""))
     return jsonify(log), 201
 
 
 @app.route("/api/workout-sessions", methods=["POST"])
 def api_save_session():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
     data = request.get_json() or {}
     routine_id = data.get("routine_id")
     routine_name = data.get("routine_name", "Custom Workout")
@@ -725,6 +829,7 @@ def api_save_session():
     if not exercises:
         return jsonify({"error": "Exercises are required."}), 400
     log = database.save_workout_session(
+        user_id,
         routine_id, 
         routine_name, 
         exercises, 
@@ -736,20 +841,30 @@ def api_save_session():
 
 @app.route("/api/history")
 def api_history():
-    return jsonify(database.get_workout_history())
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify([]) # Return empty history if not logged in
+    return jsonify(database.get_workout_history(user_id))
 
 
 @app.route("/api/history/<int:log_id>")
 def api_history_detail(log_id):
-    detail = database.get_workout_detail(log_id)
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    detail = database.get_workout_detail(log_id, user_id)
     if not detail:
-        return jsonify({"error": "Log not found."}), 404
+        return jsonify({"error": "Log not found or unauthorized."}), 404
     return jsonify(detail)
 
 
 @app.route("/api/exercises/<exercise_id>/performance")
 def api_exercise_performance(exercise_id):
-    return jsonify(database.get_exercise_performance(exercise_id))
+    user_id = session.get("user_id")
+    if not user_id:
+         return jsonify({"history": [], "stats": {}, "prs": []})
+    return jsonify(database.get_exercise_performance(exercise_id, user_id))
 
 
 # ---------------------------------------------------------------------------
@@ -757,7 +872,10 @@ def api_exercise_performance(exercise_id):
 # ---------------------------------------------------------------------------
 @app.route("/api/analytics")
 def api_analytics():
-    return jsonify(database.get_analytics())
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+    return jsonify(database.get_analytics(user_id))
 
 
 # ---------------------------------------------------------------------------
