@@ -1,0 +1,184 @@
+/* ============================================================
+   ANALYTICS PAGE CSS
+   ============================================================ */
+
+/* ─── Stat cards ─── */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-lg);
+    margin-bottom: var(--sp-2xl);
+}
+
+.stat-card {
+    text-align: center;
+    padding: var(--sp-xl) var(--sp-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, var(--clr-accent-glow) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: var(--sp-sm);
+}
+
+.stat-value {
+    font-size: 2.2rem;
+    font-weight: var(--fw-black);
+    color: var(--clr-accent);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: var(--sp-xs);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--clr-text-muted);
+    font-weight: var(--fw-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* ─── Log CTA ─── */
+.log-cta {
+    text-align: center;
+    padding: var(--sp-2xl);
+    margin-bottom: var(--sp-2xl);
+}
+
+.log-cta-icon {
+    font-size: 3rem;
+    margin-bottom: var(--sp-md);
+}
+
+.log-cta a {
+    color: var(--clr-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* ─── Charts ─── */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--sp-xl);
+    margin-bottom: var(--sp-2xl);
+}
+
+.chart-card {
+    padding: var(--sp-xl);
+}
+
+.chart-title {
+    font-size: 1rem;
+    font-weight: var(--fw-semibold);
+    margin-bottom: var(--sp-lg);
+}
+
+.chart-subtitle {
+    font-size: 0.8rem;
+    color: var(--clr-text-muted);
+    font-weight: var(--fw-normal);
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 260px;
+}
+
+.chart-wrapper--sm {
+    height: 220px;
+}
+
+/* ─── Recent Logs Table ─── */
+.recent-section {
+    padding: var(--sp-xl);
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: var(--sp-lg);
+}
+
+.log-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.log-table th,
+.log-table td {
+    text-align: left;
+    padding: 0.75rem var(--sp-md);
+    border-bottom: 1px solid var(--clr-border);
+}
+
+.log-table th {
+    font-size: 0.75rem;
+    font-weight: var(--fw-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--clr-text-muted);
+}
+
+.log-table td {
+    color: var(--clr-text);
+}
+
+.log-table tbody tr:hover {
+    background: var(--clr-surface-2);
+}
+
+.log-table td:first-child {
+    color: var(--clr-text-dim);
+    font-size: 0.8rem;
+}
+
+.log-date {
+    color: var(--clr-text-muted);
+    font-size: 0.82rem;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1100px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-wrapper {
+        height: 220px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--sp-md);
+    }
+
+    .stat-value {
+        font-size: 1.6rem;
+    }
+}

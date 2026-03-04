@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="FitForge Nutrition Guide — explore muscle gain foods, fat loss foods, vegetarian protein sources, and budget-friendly fitness foods with macros." />
+    <title>Nutrition Guide — FitForge</title>
+
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/nutrition.css" />
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Fit<span>Forge</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/calculators">Calculators</a></li>
+                <li><a href="/exercises">Exercises</a></li>
+                <li><a href="/calisthenics">Calisthenics</a></li>
+                <li><a href="/workout-generator">Workout</a></li>
+                <li><a href="/nutrition" class="active">Nutrition</a></li>
+                <li><a href="/routines">Routines</a></li>
+                <li><a href="/analytics">Analytics</a></li>
+                <li><a href="/training">Training</a></li>
+                <li><a href="/history">History</a></li>
+            </ul>
+            <button class="nav-hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+        <span class="section-label">🥗 Nutrition Guide</span>
+        <h1 class="section-title" style="margin-top:var(--sp-md);">Fuel Your Fitness</h1>
+        <p class="section-subtitle">
+            Discover the best foods for your goal — with protein, calorie, and benefit details for every entry.
+        </p>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="nutrition-container">
+
+        <!-- Category tabs -->
+        <div class="nutrition-tabs" id="nutritionTabs">
+            <button class="nutrition-tab active" data-category="muscle_gain">
+                <span class="tab-emoji">💪</span> Muscle Gain
+            </button>
+            <button class="nutrition-tab" data-category="fat_loss">
+                <span class="tab-emoji">🔥</span> Fat Loss
+            </button>
+            <button class="nutrition-tab" data-category="high_protein_vegetarian">
+                <span class="tab-emoji">🌱</span> High Protein Vegetarian
+            </button>
+            <button class="nutrition-tab" data-category="budget_friendly">
+                <span class="tab-emoji">💰</span> Budget Friendly
+            </button>
+        </div>
+
+        <!-- Section description -->
+        <div class="nutrition-section-desc" id="nutritionSectionDesc">
+            <div class="section-desc-icon" id="descIcon">💪</div>
+            <div class="section-desc-text">
+                <h3 id="descTitle">Muscle Gain Foods</h3>
+                <p id="descText">High-protein, calorie-dense foods to fuel muscle growth and recovery.</p>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="spinner" id="nutritionSpinner"></div>
+
+        <!-- Food grid -->
+        <div class="food-grid" id="foodGrid">
+            <!-- Dynamically populated by nutrition.js -->
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="nav-logo" style="font-size:1.2rem;">Fit<span>Forge</span></div>
+                <p>Smart food choices are half the battle. Use this guide to fuel your best workouts.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Food Categories</h4>
+                <ul>
+                    <li><a href="#" onclick="switchTab('muscle_gain')">Muscle Gain Foods</a></li>
+                    <li><a href="#" onclick="switchTab('fat_loss')">Fat Loss Foods</a></li>
+                    <li><a href="#" onclick="switchTab('high_protein_vegetarian')">Vegetarian Protein</a></li>
+                    <li><a href="#" onclick="switchTab('budget_friendly')">Budget Friendly</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Tools</h4>
+                <ul>
+                    <li><a href="/calculators">BMI Calculator</a></li>
+                    <li><a href="/exercises">Exercise Library</a></li>
+                    <li><a href="/workout">Workout Generator</a></li>
+                    <li><a href="/routines">Routine Builder</a></li>
+                    <li><a href="/analytics">Analytics</a></li>
+                    <li><a href="/training">Training Protocols</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 FitForge. Nutritional values are approximate per 100g. Consult a dietitian for personalized
+                advice.</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/nav.js"></script>
+    <script src="/static/js/nutrition.js"></script>
+</body>
+
+</html>

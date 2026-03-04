@@ -1,0 +1,228 @@
+/* ===========================================================
+   NUTRITION GUIDE STYLES
+   =========================================================== */
+
+.nutrition-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--sp-2xl) var(--sp-xl);
+}
+
+/* Category tabs */
+.nutrition-tabs {
+    display: flex;
+    gap: var(--sp-sm);
+    flex-wrap: wrap;
+    margin-bottom: var(--sp-xl);
+}
+
+.nutrition-tab {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-sm);
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius-full);
+    font-size: 0.875rem;
+    font-weight: var(--fw-semibold);
+    border: 1px solid var(--clr-border);
+    background: var(--clr-surface);
+    color: var(--clr-text-muted);
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.nutrition-tab:hover {
+    border-color: var(--clr-accent);
+    color: var(--clr-accent);
+}
+
+.nutrition-tab.active {
+    background: var(--clr-accent);
+    border-color: var(--clr-accent);
+    color: #000;
+}
+
+.tab-emoji {
+    font-size: 1rem;
+}
+
+/* Section description */
+.nutrition-section-desc {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-lg) var(--sp-xl);
+    margin-bottom: var(--sp-xl);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-lg);
+}
+
+.section-desc-icon {
+    font-size: 2rem;
+}
+
+.section-desc-text h3 {
+    font-size: 1rem;
+    font-weight: var(--fw-bold);
+    margin-bottom: 0.25rem;
+}
+
+.section-desc-text p {
+    font-size: 0.875rem;
+    color: var(--clr-text-muted);
+}
+
+/* Food cards grid */
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--sp-lg);
+}
+
+/* Food card */
+.food-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-md);
+    transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.food-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--clr-accent), var(--clr-accent2));
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.food-card:hover {
+    border-color: var(--clr-accent);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glow);
+}
+
+.food-card:hover::before {
+    opacity: 1;
+}
+
+.food-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.food-card-name {
+    font-size: 1rem;
+    font-weight: var(--fw-bold);
+}
+
+.food-emoji {
+    font-size: 1.8rem;
+}
+
+/* Macro stats row */
+.food-macros {
+    display: flex;
+    gap: var(--sp-sm);
+}
+
+.macro-pill {
+    flex: 1;
+    background: var(--clr-surface-2);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-sm);
+    text-align: center;
+}
+
+.macro-value {
+    font-size: 1rem;
+    font-weight: var(--fw-black);
+    color: var(--clr-accent);
+    line-height: 1;
+}
+
+.macro-label {
+    font-size: 0.65rem;
+    color: var(--clr-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.2rem;
+}
+
+/* Benefits */
+.food-benefits {
+    font-size: 0.85rem;
+    color: var(--clr-text-muted);
+    line-height: 1.6;
+}
+
+/* Best time badge */
+.food-time {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: var(--clr-text-muted);
+    background: var(--clr-surface-2);
+    padding: 0.35rem 0.7rem;
+    border-radius: var(--radius-full);
+    width: fit-content;
+    margin-top: auto;
+}
+
+.food-time strong {
+    color: var(--clr-text);
+}
+
+/* Protein bar visualization */
+.protein-bar-wrapper {
+    margin-top: var(--sp-xs);
+}
+
+.protein-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--clr-text-muted);
+    margin-bottom: 4px;
+}
+
+.protein-bar-track {
+    height: 5px;
+    background: var(--clr-border);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.protein-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--clr-accent), var(--clr-accent2));
+    border-radius: var(--radius-full);
+    transition: width 0.8s ease;
+}
+
+@media (max-width: 768px) {
+    .nutrition-tabs {
+        gap: var(--sp-xs);
+    }
+
+    .nutrition-tab {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.9rem;
+    }
+
+    .food-grid {
+        grid-template-columns: 1fr;
+    }
+}

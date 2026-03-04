@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="FitForge Routine Builder — Create, manage, and customise your workout routines with drag-and-drop reordering." />
+    <title>Routine Builder — FitForge</title>
+
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/routines.css" />
+    <link rel="stylesheet" href="/static/css/active_workout.css" />
+</head>
+
+<body>
+    <!-- Active Workout Overlay -->
+    <div id="activeWorkoutOverlay" class="active-workout-overlay" style="display: none;">
+        <div class="active-workout-container">
+            <div class="workout-header">
+                <div class="timer-display">
+                    <span id="workoutTimer">00:00:00</span>
+                    <label>Total Time</label>
+                </div>
+                <div class="workout-controls">
+                    <button id="pauseWorkoutBtn" class="btn btn-outline btn-sm">Pause</button>
+                    <button id="finishWorkoutBtn" class="btn btn-primary">Finish Workout</button>
+                    <button id="cancelWorkoutBtn" class="btn btn-outline btn-sm">Cancel</button>
+                </div>
+            </div>
+
+            <div class="workout-body">
+                <div class="workout-exercises-list" id="workoutExercisesList">
+                    <!-- Exercise cards are injected here -->
+                </div>
+
+                <div class="rest-overlay" id="restOverlay" style="display: none;">
+                    <div class="rest-content">
+                        <h3>Rest Time</h3>
+                        <div class="rest-timer" id="restCountdown">60</div>
+                        <p>seconds left</p>
+                        <button id="skipRestBtn" class="btn btn-outline btn-sm">Skip Rest</button>
+                    </div>
+                </div>
+
+                <div class="pause-overlay" id="pauseOverlay" style="display: none;">
+                    <div class="pause-content">
+                        <div class="pause-icon">⏸️</div>
+                        <h3>Workout Paused</h3>
+                        <p>Time to catch your breath. Your progress is safe.</p>
+                        <button id="resumeWorkoutBtn" class="btn btn-primary btn-lg">Resume Workout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Fit<span>Forge</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/calculators">Calculators</a></li>
+                <li><a href="/exercises">Exercises</a></li>
+                <li><a href="/calisthenics">Calisthenics</a></li>
+                <li><a href="/workout-generator">Workout Generator</a></li>
+                <li><a href="/nutrition">Nutrition</a></li>
+                <li><a href="/routines" class="active">Routines</a></li>
+                <li><a href="/analytics">Analytics</a></li>
+                <li><a href="/training">Training</a></li>
+                <li><a href="/history">History</a></li>
+            </ul>
+            <button class="nav-hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+        <span class="section-label">📋 Routine Builder</span>
+        <h1 class="section-title" style="margin-top:var(--sp-md);">Build Your Perfect Routine</h1>
+        <p class="section-subtitle">
+            Create custom workout routines, add exercises from the library, and log your sessions to track progress.
+        </p>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="routines-layout section">
+        <div class="container">
+            <div class="routines-grid">
+
+                <!-- ─── LEFT: Routine List Panel ─── -->
+                <aside class="routines-panel card">
+                    <div class="panel-header">
+                        <h2 class="panel-title">My Routines</h2>
+                        <button class="btn btn-primary btn-sm" id="btnNewRoutine">
+                            <span>+</span> New
+                        </button>
+                    </div>
+
+                    <!-- Spinner -->
+                    <div class="spinner" id="routineListSpinner"></div>
+
+                    <!-- Routine List -->
+                    <ul class="routine-list" id="routineList"></ul>
+
+                    <!-- Empty state -->
+                    <div class="empty-state" id="routineListEmpty" style="display:none;">
+                        <div class="empty-icon">📋</div>
+                        <h3>No routines yet</h3>
+                        <p>Click <strong>+ New</strong> to create your first routine.</p>
+                    </div>
+                </aside>
+
+                <!-- ─── RIGHT: Routine Editor Panel ─── -->
+                <main class="editor-panel" id="editorPanel">
+
+                    <!-- Default idle state -->
+                    <div class="editor-idle" id="editorIdle">
+                        <div class="idle-icon">🏋️</div>
+                        <h3>Select or create a routine</h3>
+                        <p class="section-subtitle" style="margin:0;">Click a routine on the left to open it, or create
+                            a new one.</p>
+                    </div>
+
+                    <!-- Active editor -->
+                    <div class="editor-active" id="editorActive" style="display:none;">
+
+                        <!-- Routine header -->
+                        <div class="editor-header card">
+                            <div class="editor-title-row">
+                                <input type="text" id="routineName" class="routine-name-input"
+                                    placeholder="Routine name…" />
+                                <div class="editor-header-actions">
+                                    <button class="btn btn-secondary btn-sm" id="btnSaveName">Save</button>
+                                    <button class="btn btn-danger btn-sm" id="btnDeleteRoutine">Delete</button>
+                                </div>
+                            </div>
+                            <input type="text" id="routineDesc" class="routine-desc-input"
+                                placeholder="Optional description…" />
+                        </div>
+
+                        <!-- Exercise list inside routine -->
+                        <div class="exercise-list-header">
+                            <h3>Exercises <span class="ex-count" id="exCount">0</span></h3>
+                            <button class="btn btn-primary btn-sm" id="btnAddExercise">+ Add Exercise</button>
+                        </div>
+
+                        <ul class="routine-ex-list" id="routineExList">
+                            <!-- Dynamically populated -->
+                        </ul>
+
+                        <div class="empty-state" id="exEmpty" style="display:none;">
+                            <div class="empty-icon">💪</div>
+                            <h3>No exercises yet</h3>
+                            <p>Click <strong>+ Add Exercise</strong> to build your workout.</p>
+                        </div>
+
+                        <!-- Log workout button -->
+                        <div class="log-section">
+                            <button class="btn btn-primary btn-lg full-width" id="btnLogWorkout">
+                                ✅ Log This Workout
+                            </button>
+                        </div>
+
+                    </div>
+                </main>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── EXERCISE PICKER MODAL ─── -->
+    <div class="modal-overlay" id="pickerModal" style="display:none;">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Add Exercise</h3>
+                <button class="modal-close" id="pickerClose">✕</button>
+            </div>
+            <div class="modal-search">
+                <input type="text" id="pickerSearch" class="form-input" placeholder="Search exercises…" />
+            </div>
+            <div class="picker-filters">
+                <select id="pickerMuscle" class="form-select">
+                    <option value="">All Muscles</option>
+                    <option value="Chest">Chest</option>
+                    <option value="Back">Back</option>
+                    <option value="Shoulders">Shoulders</option>
+                    <option value="Arms">Arms</option>
+                    <option value="Legs">Legs</option>
+                    <option value="Core">Core</option>
+                </select>
+            </div>
+            <div class="spinner" id="pickerSpinner"></div>
+            <ul class="picker-list" id="pickerList"></ul>
+        </div>
+    </div>
+
+    <!-- ─── ROUTINE WIZARD MODAL ─── -->
+    <div class="modal-overlay" id="wizardModal" style="display:none;">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Routine Creator</h3>
+                <button class="modal-close" id="wizardClose">✕</button>
+            </div>
+
+            <!-- Step 1: Goal & Experience -->
+            <div class="wizard-step active" data-step="1">
+                <div class="section-label">Step 1 of 4</div>
+                <h4 style="margin:var(--sp-md) 0;">What is your primary goal?</h4>
+                <div class="selection-grid">
+                    <button class="chip active" data-goal="strength">Strength</button>
+                    <button class="chip" data-goal="hypertrophy">Muscle Gain</button>
+                    <button class="chip" data-goal="fatloss">Fat Loss</button>
+                </div>
+
+                <h4 style="margin:var(--sp-xl) 0 var(--sp-md);">What is your experience level?</h4>
+                <div class="selection-grid">
+                    <button class="chip active" data-level="beginner">Beginner</button>
+                    <button class="chip" data-level="intermediate">Intermediate</button>
+                    <button class="chip" data-level="advanced">Advanced</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Equipment -->
+            <div class="wizard-step" data-step="2">
+                <div class="section-label">Step 2 of 4</div>
+                <h4 style="margin:var(--sp-md) 0;">What equipment do you have?</h4>
+                <div class="selection-grid" id="wizardEquipment">
+                    <button class="chip active" data-eq="Barbell">Barbell</button>
+                    <button class="chip active" data-eq="Dumbbell">Dumbbell</button>
+                    <button class="chip active" data-eq="Machine">Machines</button>
+                    <button class="chip" data-eq="Cable">Cables</button>
+                    <button class="chip" data-eq="None">Bodyweight</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Muscle Groups -->
+            <div class="wizard-step" data-step="3">
+                <div class="section-label">Step 3 of 4</div>
+                <h4 style="margin:var(--sp-md) 0;">Which muscles are we hitting?</h4>
+                <div class="selection-grid" id="wizardMuscles">
+                    <button class="chip active" data-muscle="Chest">Chest</button>
+                    <button class="chip active" data-muscle="Back">Back</button>
+                    <button class="chip active" data-muscle="Legs">Legs</button>
+                    <button class="chip" data-muscle="Shoulders">Shoulders</button>
+                    <button class="chip" data-muscle="Arms">Arms</button>
+                    <button class="chip" data-muscle="Core">Core</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Preview & Name -->
+            <div class="wizard-step" data-step="4">
+                <div class="section-label">Final Step</div>
+                <h4 style="margin:var(--sp-md) 0;">Your Suggested Routine</h4>
+                <div id="suggestedPreview" class="suggested-preview" style="margin-bottom:var(--sp-lg);">
+                    <!-- Suggestions appear here -->
+                    <div class="spinner" id="suggestSpinner"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Name your routine</label>
+                    <input type="text" id="wizardRoutineName" class="form-input"
+                        placeholder="e.g. My Custom Push Day" />
+                </div>
+            </div>
+
+            <div class="wizard-footer">
+                <button class="btn btn-secondary" id="wizardBackBtn" style="visibility:hidden;">Back</button>
+                <button class="btn btn-primary" id="wizardNextBtn">Next</button>
+                <button class="btn btn-primary" id="wizardFinishBtn" style="display:none;">Save Routine</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="nav-logo" style="font-size:1.2rem;">Fit<span>Forge</span></div>
+                <p>Build, track, and crush your fitness goals.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Features</h4>
+                <ul>
+                    <li><a href="/exercises">Exercise Library</a></li>
+                    <li><a href="/workout">Workout Generator</a></li>
+                    <li><a href="/analytics">Analytics</a></li>
+                    <li><a href="/training">Training Protocols</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 FitForge. Always warm up before exercising. 💪</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/nav.js"></script>
+    <script src="/static/js/routines.js"></script>
+    <script src="/static/js/active_workout.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="FitForge Analytics — Track your workout history, muscle frequency, and weekly activity with beautiful charts." />
+    <title>Analytics — FitForge</title>
+
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/analytics.css" />
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Fit<span>Forge</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/calculators">Calculators</a></li>
+                <li><a href="/exercises">Exercises</a></li>
+                <li><a href="/calisthenics">Calisthenics</a></li>
+                <li><a href="/workout-generator">Workout Generator</a></li>
+                <li><a href="/nutrition">Nutrition</a></li>
+                <li><a href="/routines">Routines</a></li>
+                <li><a href="/analytics" class="active">Analytics</a></li>
+                <li><a href="/training">Training</a></li>
+                <li><a href="/history">History</a></li>
+            </ul>
+            <button class="nav-hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+        <span class="section-label">📊 Analytics</span>
+        <h1 class="section-title" style="margin-top:var(--sp-md);">Track Your Progress</h1>
+        <p class="section-subtitle">
+            Log your workouts to unlock beautiful charts and insights about your training habits over time.
+        </p>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="section">
+        <div class="container">
+
+            <!-- ─── Stat Cards ─── -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card card">
+                    <div class="stat-icon">🏋️</div>
+                    <div class="stat-value" id="statTotalWorkouts">—</div>
+                    <div class="stat-label">Total Workouts</div>
+                </div>
+                <div class="stat-card card">
+                    <div class="stat-icon">💪</div>
+                    <div class="stat-value" id="statTotalExercises">—</div>
+                    <div class="stat-label">Exercises Logged</div>
+                </div>
+                <div class="stat-card card">
+                    <div class="stat-icon">👑</div>
+                    <div class="stat-value" id="statPRCount">—</div>
+                    <div class="stat-label">Personal Records</div>
+                </div>
+                <div class="stat-card card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value" id="statTotalVolume">—</div>
+                    <div class="stat-label">Total Volume (kg)</div>
+                </div>
+                <div class="stat-card card">
+                    <div class="stat-icon">🥈</div>
+                    <div class="stat-value" id="statTopRoutine">—</div>
+                    <div class="stat-label">Top Routine</div>
+                </div>
+                <div class="stat-card card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-value" id="statThisWeek">—</div>
+                    <div class="stat-label">Workouts This Week</div>
+                </div>
+            </div>
+
+            <!-- ─── Log CTA (shown when no data) ─── -->
+            <div class="log-cta card" id="logCta" style="display:none;">
+                <div class="log-cta-icon">📊</div>
+                <h3>No workout data yet</h3>
+                <p>Head to <a href="/routines">Routines</a>, build a workout, and log it to see your analytics here.</p>
+            </div>
+
+            <!-- ─── Charts Grid ─── -->
+            <div class="charts-grid" id="chartsGrid">
+                <div class="chart-card card">
+                    <h3 class="chart-title">Weekly Activity <span class="chart-subtitle">(last 28 days)</span></h3>
+                    <div class="chart-wrapper">
+                        <canvas id="weeklyChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card card">
+                    <h3 class="chart-title">Top Routines</h3>
+                    <div class="chart-wrapper chart-wrapper--sm">
+                        <canvas id="routineChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card card">
+                    <h3 class="chart-title">Muscle Group Focus</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="muscleChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── Recent Workout Log Table ─── -->
+            <div class="recent-section card" id="recentSection">
+                <h3 class="chart-title">Recent Workouts</h3>
+                <div class="spinner" id="analyticsSpinner"></div>
+                <div class="table-wrapper">
+                    <table class="log-table" id="logTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Routine</th>
+                                <th>Notes</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logTableBody">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="empty-state" id="recentEmpty" style="display:none;">
+                    <div class="empty-icon">📋</div>
+                    <h3>No logged workouts yet</h3>
+                    <p>Complete your first workout from the <a href="/routines">Routines</a> page.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="nav-logo" style="font-size:1.2rem;">Fit<span>Forge</span></div>
+                <p>Data-driven fitness tracking for every goal.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Features</h4>
+                <ul>
+                    <li><a href="/exercises">Exercise Library</a></li>
+                    <li><a href="/routines">Routine Builder</a></li>
+                    <li><a href="/workout">Workout Generator</a></li>
+                    <li><a href="/training">Training Protocols</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 FitForge. Always warm up before exercising. 💪</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/nav.js"></script>
+    <script src="/static/js/analytics.js"></script>
+</body>
+
+</html>

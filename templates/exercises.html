@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="FitForge Exercise Library — browse 35+ exercises filtered by muscle group, difficulty, and equipment." />
+    <title>Exercise Library — FitForge</title>
+
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/exercises.css" />
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Fit<span>Forge</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/calculators">Calculators</a></li>
+                <li><a href="/exercises" class="active">Exercises</a></li>
+                <li><a href="/calisthenics">Calisthenics</a></li>
+                <li><a href="/workout-generator">Workout Generator</a></li>
+                <li><a href="/nutrition">Nutrition</a></li>
+                <li><a href="/routines">Routines</a></li>
+                <li><a href="/analytics">Analytics</a></li>
+                <li><a href="/training">Training</a></li>
+                <li><a href="/history">History</a></li>
+            </ul>
+            <button class="nav-hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+        <span class="section-label">🏋️ Exercise Library</span>
+        <h1 class="section-title" style="margin-top:var(--sp-md);">Master Your Form</h1>
+        <p class="section-subtitle">
+            Explore 1000+ exercises with detailed instructions to build a stronger body.
+        </p>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="exercises-layout">
+
+        <!-- Filters Bar -->
+        <div class="exercises-filters">
+            <!-- Search -->
+            <div class="filter-group" style="flex:1;min-width:200px;">
+                <label>Search</label>
+                <div class="search-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" class="form-input" placeholder="Search exercises..."
+                        aria-label="Search exercises" />
+                </div>
+            </div>
+
+            <!-- Filter Trigger (Visible on all, but especially useful on mobile) -->
+            <div class="filter-group" style="justify-content: flex-end; align-items: flex-end;">
+                <button class="btn btn-secondary" id="openFiltersBtn">
+                    <span>Tune</span> Filters
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Sheet for Filters -->
+        <div class="bottom-sheet" id="filterSheet">
+            <div class="bottom-sheet-backdrop" id="filterBackdrop"></div>
+            <div class="bottom-sheet-content">
+                <div class="bottom-sheet-header">
+                    <h3>Tune Your Search</h3>
+                    <button class="bottom-sheet-close" id="closeFiltersBtn">✕</button>
+                </div>
+
+                <div class="form-group" style="margin-bottom:var(--sp-lg);">
+                    <label class="form-label">Equipment</label>
+                    <div class="filter-chips" id="equipmentChips">
+                        <button class="chip active" data-value="">All</button>
+                        <button class="chip" data-value="Barbell">Barbell</button>
+                        <button class="chip" data-value="Dumbbell">Dumbbell</button>
+                        <button class="chip" data-value="Machine">Machine</button>
+                        <button class="chip" data-value="Cable">Cable</button>
+                        <button class="chip" data-value="None">Bodyweight</button>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:var(--sp-lg);">
+                    <label class="form-label">Muscle Group</label>
+                    <div class="filter-chips" id="muscleChips">
+                        <button class="chip active" data-value="">All</button>
+                        <button class="chip" data-value="Chest">Chest</button>
+                        <button class="chip" data-value="Back">Back</button>
+                        <button class="chip" data-value="Shoulders">Shoulders</button>
+                        <button class="chip" data-value="Arms">Arms</button>
+                        <button class="chip" data-value="Legs">Legs</button>
+                        <button class="chip" data-value="Core">Core</button>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:var(--sp-lg);">
+                    <label class="form-label">Experience Level</label>
+                    <div class="filter-chips" id="difficultyChips">
+                        <button class="chip active" data-value="">All</button>
+                        <button class="chip" data-value="Beginner">Beginner</button>
+                        <button class="chip" data-value="Intermediate">Intermediate</button>
+                        <button class="chip" data-value="Advanced">Advanced</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary full-width" id="applyFiltersBtn">Show Results</button>
+            </div>
+        </div>
+
+        <!-- Results count -->
+        <p class="results-count" id="resultsCount">Loading exercises...</p>
+
+        <!-- Loading spinner -->
+        <div class="spinner" id="exerciseSpinner"></div>
+
+        <!-- Exercises Grid -->
+        <div class="exercises-grid" id="exercisesGrid">
+            <!-- Dynamically populated by exercises.js -->
+        </div>
+
+        <!-- Empty state -->
+        <div class="empty-state" id="emptyState" style="display:none;">
+            <div class="empty-icon">🔍</div>
+            <h3>No exercises found</h3>
+            <p>Try adjusting your filters or clearing the search.</p>
+            <button class="btn btn-secondary" style="margin-top:var(--sp-md);" onclick="resetFilters()">Clear
+                Filters</button>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="nav-logo" style="font-size:1.2rem;">Fit<span>Forge</span></div>
+                <p>Comprehensive exercise guidance for every fitness level and goal.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Tools</h4>
+                <ul>
+                    <li><a href="/calculators">Calculators</a></li>
+                    <li><a href="/exercises">Exercise Library</a></li>
+                    <li><a href="/nutrition">Nutrition Guide</a></li>
+                    <li><a href="/routines">Routine Builder</a></li>
+                    <li><a href="/analytics">Analytics</a></li>
+                    <li><a href="/training">Training Protocols</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 FitForge. Always warm up before exercising. 💪</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/nav.js"></script>
+    <script src="/static/js/exercises.js"></script>
+</body>
+
+</html>

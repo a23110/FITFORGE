@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="FitForge Training Protocols — HIIT, Mobility, Strength Circuits and Stretching programs for every fitness level." />
+    <title>Training Protocols — FitForge</title>
+
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/training.css" />
+    <link rel="stylesheet" href="/static/css/active_workout.css" />
+</head>
+
+<body>
+    <!-- Active Workout Overlay -->
+    <div id="activeWorkoutOverlay" class="active-workout-overlay" style="display: none;">
+        <div class="active-workout-container">
+            <div class="workout-header">
+                <div class="timer-display">
+                    <span id="workoutTimer">00:00:00</span>
+                    <label>Total Time</label>
+                </div>
+                <div class="workout-controls">
+                    <button id="pauseWorkoutBtn" class="btn btn-outline btn-sm">Pause</button>
+                    <button id="finishWorkoutBtn" class="btn btn-primary">Finish Workout</button>
+                    <button id="cancelWorkoutBtn" class="btn btn-outline btn-sm">Cancel</button>
+                </div>
+            </div>
+
+            <div class="workout-body">
+                <div class="workout-exercises-list" id="workoutExercisesList">
+                    <!-- Exercise cards are injected here -->
+                </div>
+
+                <!-- Floating Jump Navigation -->
+                <div class="workout-jump-nav">
+                    <button onclick="prevExercise()" class="nav-jump-btn" title="Previous Exercise">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                    <button onclick="nextExercise()" class="nav-jump-btn" title="Next Exercise">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <div class="rest-overlay" id="restOverlay" style="display: none;">
+                    <div class="rest-content">
+                        <h3>Rest Time</h3>
+                        <div class="rest-timer" id="restCountdown">60</div>
+                        <p>seconds left</p>
+                        <button id="skipRestBtn" class="btn btn-outline btn-sm">Skip Rest</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause/Resume Modals -->
+    <div id="pauseOverlay" class="pause-overlay" style="display: none;">
+        <div class="pause-content">
+            <h2>Workout Paused</h2>
+            <p>Your timer is stopped. Take a breather!</p>
+            <button id="resumeWorkoutBtn" class="btn btn-primary">Resume Workout</button>
+        </div>
+    </div>
+
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Fit<span>Forge</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/calculators">Calculators</a></li>
+                <li><a href="/exercises">Exercises</a></li>
+                <li><a href="/calisthenics">Calisthenics</a></li>
+                <li><a href="/workout-generator">Workout Generator</a></li>
+                <li><a href="/nutrition">Nutrition</a></li>
+                <li><a href="/routines">Routines</a></li>
+                <li><a href="/analytics">Analytics</a></li>
+                <li><a href="/training" class="active">Training</a></li>
+                <li><a href="/history">History</a></li>
+            </ul>
+            <button class="nav-hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+        <span class="section-label">⚡ Training Protocols</span>
+        <h1 class="section-title" style="margin-top:var(--sp-md);">Specialised Training Programs</h1>
+        <p class="section-subtitle">
+            Evidence-based protocols for HIIT, mobility, strength circuits, and flexibility — structured for real
+            results.
+        </p>
+    </section>
+
+    <!-- MAIN -->
+    <div class="section">
+        <div class="container">
+
+            <!-- ─── Tag Filter Chips ─── -->
+            <div class="training-filters">
+                <div class="filter-chips" id="tagChips">
+                    <button class="chip active" data-tag="">All</button>
+                    <button class="chip" data-tag="hiit">⚡ HIIT</button>
+                    <button class="chip" data-tag="mobility">🧘 Mobility</button>
+                    <button class="chip" data-tag="strength">💪 Strength Circuit</button>
+                    <button class="chip" data-tag="stretching">🌿 Stretching</button>
+                    <button class="chip" data-tag="cardio">🏃 Cardio</button>
+                </div>
+            </div>
+
+            <!-- ─── Results count ─── -->
+            <p class="results-count" id="protocolCount">Loading protocols…</p>
+
+            <!-- ─── Protocol Cards Grid ─── -->
+            <div class="protocols-grid" id="protocolsGrid">
+                <!-- Populated by training.js -->
+            </div>
+
+            <!-- Empty state -->
+            <div class="empty-state" id="protocolEmpty" style="display:none;">
+                <div class="empty-icon">🔍</div>
+                <h3>No protocols found</h3>
+                <p>Try a different tag filter.</p>
+                <button class="btn btn-secondary" style="margin-top:var(--sp-md);" onclick="clearTag()">Show
+                    All</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="nav-logo" style="font-size:1.2rem;">Fit<span>Forge</span></div>
+                <p>Evidence-based protocols for every fitness level and goal.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Protocols</h4>
+                <ul>
+                    <li><a href="#" onclick="filterTag('hiit')">HIIT Training</a></li>
+                    <li><a href="#" onclick="filterTag('mobility')">Mobility Work</a></li>
+                    <li><a href="#" onclick="filterTag('strength')">Strength Circuits</a></li>
+                    <li><a href="#" onclick="filterTag('stretching')">Stretching</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Tools</h4>
+                <ul>
+                    <li><a href="/exercises">Exercise Library</a></li>
+                    <li><a href="/calisthenics">Calisthenics Hub</a></li>
+                    <li><a href="/workout">Workout Generator</a></li>
+                    <li><a href="/routines">Routine Builder</a></li>
+                    <li><a href="/analytics">Analytics Dashboard</a></li>
+                    <li><a href="/training" class="active">Training Protocols</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 FitForge. Consult a professional before starting a new training program. 💪</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/nav.js"></script>
+    <script src="/static/js/active_workout.js"></script>
+    <script src="/static/js/training.js"></script>
+</body>
+
+</html>

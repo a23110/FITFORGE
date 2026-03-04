@@ -1,0 +1,223 @@
+.calisthenics-hero {
+    padding: 120px 0 60px;
+    background: linear-gradient(135deg, rgba(18, 18, 18, 0.95) 0%, rgba(30, 30, 30, 0.8) 100%),
+        url('/static/images/hero-bg.jpg') center/cover;
+    text-align: center;
+}
+
+.calisthenics-hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.calisthenics-hero p {
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+}
+
+.hub-controls {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    justify-content: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.filter-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent-primary);
+}
+
+.chips {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.chip {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.chip:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.chip.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: #000;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 229, 160, 0.3);
+}
+
+.progression-section {
+    padding: 60px 0;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+}
+
+.section-header:first-child {
+    margin-top: 0;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+}
+
+.difficulty-tag {
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.difficulty-tag.beg {
+    background: #00e5a0;
+    color: #000;
+}
+
+.difficulty-tag.int {
+    background: #7c6bff;
+    color: #fff;
+}
+
+.difficulty-tag.adv {
+    background: #ff5c5c;
+    color: #fff;
+}
+
+.exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.cali-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.cali-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.cali-card-header {
+    height: 180px;
+    background: #252525;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cali-card-header i {
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.1);
+}
+
+.cali-card-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+}
+
+.cali-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.cali-info {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.cali-instructions {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cali-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rep-suggestion {
+    font-weight: 700;
+    color: var(--accent-primary);
+    font-size: 0.9rem;
+}
+
+.tag-list {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.mini-tag {
+    font-size: 0.7rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    color: var(--text-secondary);
+    text-transform: capitalize;
+}
+
+@media (max-width: 768px) {
+    .calisthenics-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .hub-controls {
+        flex-direction: column;
+        gap: 2rem;
+    }
+}

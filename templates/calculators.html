@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="FitForge Calculators — calculate your BMI and body fat percentage using proven formulas." />
+  <title>Calculators — FitForge</title>
+
+  <link rel="stylesheet" href="/static/css/main.css" />
+  <link rel="stylesheet" href="/static/css/calculators.css" />
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">Fit<span>Forge</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/home">Home</a></li>
+        <li><a href="/calculators" class="active">Calculators</a></li>
+        <li><a href="/exercises">Exercises</a></li>
+        <li><a href="/calisthenics">Calisthenics</a></li>
+        <li><a href="/workout-generator">Workout</a></li>
+        <li><a href="/nutrition">Nutrition</a></li>
+        <li><a href="/routines">Routines</a></li>
+        <li><a href="/analytics">Analytics</a></li>
+        <li><a href="/training">Training</a></li>
+        <li><a href="/history">History</a></li>
+      </ul>
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <span class="section-label">⚖️ Health Calculators</span>
+    <h1 class="section-title" style="margin-top:var(--sp-md);">Know Your Numbers</h1>
+    <p class="section-subtitle">
+      Use scientifically validated formulas to measure your BMI and estimate your body fat percentage.
+    </p>
+  </section>
+
+  <!-- CALCULATORS LAYOUT -->
+  <div class="calc-layout">
+
+    <!-- ========== BMI CALCULATOR ========== -->
+    <div class="calc-card" id="bmi-calc">
+      <div class="calc-header">
+        <div class="calc-icon">⚖️</div>
+        <div>
+          <h2>BMI Calculator</h2>
+          <p>Body Mass Index — a weight-for-height ratio</p>
+        </div>
+      </div>
+
+      <!-- Unit toggle -->
+      <div class="unit-toggle" id="bmiUnitToggle">
+        <button class="unit-btn active" data-unit="metric" id="bmiMetricBtn">Metric (kg/cm)</button>
+        <button class="unit-btn" data-unit="imperial" id="bmiImperialBtn">Imperial (lb/in)</button>
+      </div>
+
+      <form id="bmiForm" novalidate>
+
+        <!-- Metric fields -->
+        <div id="bmiMetricFields">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="bmiWeightKg">Weight (kg)</label>
+              <input type="number" id="bmiWeightKg" class="form-input" placeholder="e.g. 70" min="1" max="500"
+                step="0.1" />
+              <span class="form-error" id="errBmiWeightKg">Enter a valid weight (1–500 kg)</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bmiHeightCm">Height (cm)</label>
+              <input type="number" id="bmiHeightCm" class="form-input" placeholder="e.g. 175" min="50" max="300"
+                step="0.1" />
+              <span class="form-error" id="errBmiHeightCm">Enter a valid height (50–300 cm)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Imperial fields -->
+        <div id="bmiImperialFields" style="display:none;">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="bmiWeightLb">Weight (lbs)</label>
+              <input type="number" id="bmiWeightLb" class="form-input" placeholder="e.g. 154" min="1" max="1100"
+                step="0.1" />
+              <span class="form-error" id="errBmiWeightLb">Enter a valid weight (1–1100 lbs)</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bmiHeightFt">Height (ft)</label>
+              <input type="number" id="bmiHeightFt" class="form-input" placeholder="5" min="1" max="9" step="1" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bmiHeightIn">Height (in)</label>
+              <input type="number" id="bmiHeightIn" class="form-input" placeholder="9" min="0" max="11" step="1" />
+              <span class="form-error" id="errBmiHeightImp">Enter a valid height</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gender (optional, for context) -->
+        <div class="form-group" style="margin-top:var(--sp-md);">
+          <label class="form-label" for="bmiGender">Gender (optional)</label>
+          <select id="bmiGender" class="form-select">
+            <option value="">Prefer not to say</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary"
+          style="width:100%;margin-top:var(--sp-lg);justify-content:center;">
+          Calculate BMI
+        </button>
+      </form>
+
+      <!-- BMI Result -->
+      <div class="calc-result" id="bmiResult">
+        <div class="result-card" id="bmiResultCard">
+          <div class="result-number" id="bmiValue">--</div>
+          <div class="result-category" id="bmiCategory">--</div>
+          <div class="result-description" id="bmiDescription">--</div>
+
+          <!-- BMI Scale -->
+          <div style="margin-top:var(--sp-lg);">
+            <div class="bmi-marker-row">
+              <div class="bmi-marker" id="bmiMarker"></div>
+            </div>
+            <div class="bmi-scale">
+              <div class="bmi-scale-segment scale-underweight"></div>
+              <div class="bmi-scale-segment scale-normal"></div>
+              <div class="bmi-scale-segment scale-overweight"></div>
+              <div class="bmi-scale-segment scale-obese"></div>
+            </div>
+            <div class="scale-labels">
+              <span>Below 18.5</span>
+              <span>18.5–25</span>
+              <span>25–30</span>
+              <span>Above 30</span>
+            </div>
+          </div>
+
+          <!-- Stats table -->
+          <div class="result-info-table" id="bmiInfoTable"></div>
+        </div>
+
+        <!-- BMI Reference Guide -->
+        <div class="bmi-reference">
+          <h4>BMI Category Reference</h4>
+          <div class="bmi-ref-item">
+            <div class="bmi-ref-dot" style="background:var(--clr-info)"></div>
+            <span><strong>Underweight</strong> — Below 18.5</span>
+          </div>
+          <div class="bmi-ref-item">
+            <div class="bmi-ref-dot" style="background:var(--clr-accent)"></div>
+            <span><strong>Normal weight</strong> — 18.5 to 24.9</span>
+          </div>
+          <div class="bmi-ref-item">
+            <div class="bmi-ref-dot" style="background:var(--clr-warning)"></div>
+            <span><strong>Overweight</strong> — 25.0 to 29.9</span>
+          </div>
+          <div class="bmi-ref-item">
+            <div class="bmi-ref-dot" style="background:var(--clr-danger)"></div>
+            <span><strong>Obese</strong> — 30.0 and above</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== BODY FAT CALCULATOR ========== -->
+    <div class="calc-card" id="bf-calc">
+      <div class="calc-header">
+        <div class="calc-icon">📏</div>
+        <div>
+          <h2>Body Fat Estimator</h2>
+          <p>U.S. Navy circumference method</p>
+        </div>
+      </div>
+
+      <form id="bfForm" novalidate>
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label class="form-label" for="bfGender">Gender *</label>
+            <select id="bfGender" class="form-select" required>
+              <option value="">Select gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            <span class="form-error" id="errBfGender">Please select a gender</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="bfHeight">Height (cm)</label>
+            <input type="number" id="bfHeight" class="form-input" placeholder="e.g. 175" min="100" max="250"
+              step="0.1" />
+            <span class="form-error" id="errBfHeight">Enter height (100–250 cm)</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="bfNeck">Neck circumference (cm)</label>
+            <input type="number" id="bfNeck" class="form-input" placeholder="e.g. 37" min="20" max="70" step="0.1" />
+            <span class="form-error" id="errBfNeck">Enter neck measurement (20–70 cm)</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="bfWaist">Waist circumference (cm)</label>
+            <input type="number" id="bfWaist" class="form-input" placeholder="e.g. 82" min="40" max="200" step="0.1" />
+            <span class="form-error" id="errBfWaist">Enter waist measurement (40–200 cm)</span>
+          </div>
+
+          <!-- Hip (female only) -->
+          <div class="form-group" id="bfHipGroup" style="display:none;">
+            <label class="form-label" for="bfHip">Hip circumference (cm)</label>
+            <input type="number" id="bfHip" class="form-input" placeholder="e.g. 95" min="50" max="200" step="0.1" />
+            <span class="form-error" id="errBfHip">Enter hip measurement (50–200 cm)</span>
+          </div>
+        </div>
+
+        <!-- Measurement guide -->
+        <div
+          style="margin-top:var(--sp-md);padding:var(--sp-md);background:var(--clr-surface-2);border-radius:var(--radius-md);font-size:0.8rem;color:var(--clr-text-muted);">
+          <strong style="color:var(--clr-text);">How to measure:</strong>
+          Neck — just below larynx. Waist (men) — at navel level. Waist (women) — narrowest point. Hip (women) — widest
+          point.
+        </div>
+
+        <button type="submit" class="btn btn-primary"
+          style="width:100%;margin-top:var(--sp-lg);justify-content:center;">
+          Calculate Body Fat
+        </button>
+      </form>
+
+      <!-- Body Fat Result -->
+      <div class="calc-result" id="bfResult">
+        <div class="result-card" id="bfResultCard">
+          <div class="result-number" id="bfValue">--%</div>
+          <div class="result-category" id="bfCategory">--</div>
+          <div class="result-description" id="bfDescription">--</div>
+          <div class="result-info-table" id="bfInfoTable"></div>
+        </div>
+
+        <!-- Body fat reference -->
+        <div class="bmi-reference" id="bfReference">
+          <h4>Body Fat Category Reference</h4>
+          <div id="bfRefItems"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /calc-layout -->
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo" style="font-size:1.2rem;">Fit<span>Forge</span></div>
+        <p>Science-backed tools to help you understand and improve your body composition.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Tools</h4>
+        <ul>
+          <li><a href="/calculators">BMI Calculator</a></li>
+          <li><a href="/calculators">Body Fat Estimator</a></li>
+          <li><a href="/exercises">Exercise Library</a></li>
+          <li><a href="/workout">Workout Generator</a></li>
+          <li><a href="/routines">Routine Builder</a></li>
+          <li><a href="/analytics">Analytics</a></li>
+          <li><a href="/training">Training Protocols</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 FitForge. Note: These calculators are for informational purposes and not medical advice.</p>
+    </div>
+  </footer>
+
+  <script src="/static/js/nav.js"></script>
+  <script src="/static/js/bmi.js"></script>
+  <script src="/static/js/bodyfat.js"></script>
+</body>
+
+</html>

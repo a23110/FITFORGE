@@ -1,0 +1,196 @@
+/* ============================================================
+   TRAINING PROTOCOLS PAGE CSS
+   ============================================================ */
+
+/* ─── Filters ─── */
+.training-filters {
+    margin-bottom: var(--sp-xl);
+}
+
+.results-count {
+    font-size: 0.9rem;
+    color: var(--clr-text-muted);
+    margin-bottom: var(--sp-xl);
+}
+
+/* ─── Protocol Cards ─── */
+.protocols-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: var(--sp-xl);
+}
+
+.protocol-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+.protocol-card:hover {
+    border-color: var(--clr-accent);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-4px);
+}
+
+/* ─── Card Accent Strip ─── */
+.protocol-card-header {
+    padding: var(--sp-xl) var(--sp-xl) var(--sp-md);
+    position: relative;
+    background: linear-gradient(135deg, var(--clr-surface-2) 0%, var(--clr-surface) 100%);
+    border-bottom: 1px solid var(--clr-border);
+}
+
+.protocol-emoji {
+    font-size: 2.5rem;
+    margin-bottom: var(--sp-sm);
+    display: block;
+}
+
+.protocol-title {
+    font-size: 1.15rem;
+    font-weight: var(--fw-bold);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--sp-xs);
+}
+
+.protocol-subtitle {
+    font-size: 0.85rem;
+    color: var(--clr-text-muted);
+    line-height: 1.4;
+}
+
+/* ─── Card Meta Row ─── */
+.protocol-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-sm);
+    flex-wrap: wrap;
+    padding: var(--sp-md) var(--sp-xl);
+    border-bottom: 1px solid var(--clr-border);
+}
+
+.protocol-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-full);
+    font-size: 0.72rem;
+    font-weight: var(--fw-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.badge-hiit {
+    background: rgba(255, 92, 92, 0.15);
+    color: var(--clr-danger);
+}
+
+.badge-mobility {
+    background: rgba(56, 182, 255, 0.15);
+    color: var(--clr-info);
+}
+
+.badge-strength {
+    background: rgba(124, 107, 255, 0.15);
+    color: var(--clr-accent2);
+}
+
+.badge-stretching {
+    background: rgba(0, 229, 160, 0.12);
+    color: var(--clr-accent);
+}
+
+.badge-cardio {
+    background: rgba(255, 169, 56, 0.15);
+    color: var(--clr-warning);
+}
+
+.protocol-duration {
+    font-size: 0.8rem;
+    color: var(--clr-text-muted);
+    margin-left: auto;
+}
+
+/* ─── Steps List ─── */
+.protocol-body {
+    padding: var(--sp-lg) var(--sp-xl);
+    flex: 1;
+}
+
+.protocol-steps-label {
+    font-size: 0.75rem;
+    font-weight: var(--fw-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--clr-text-dim);
+    margin-bottom: var(--sp-sm);
+}
+
+.protocol-steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-sm);
+    counter-reset: step;
+}
+
+.protocol-step {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: var(--sp-sm);
+    align-items: start;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: var(--clr-text-muted);
+}
+
+.protocol-step::before {
+    counter-increment: step;
+    content: counter(step);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--clr-accent-glow);
+    color: var(--clr-accent);
+    font-size: 0.72rem;
+    font-weight: var(--fw-bold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* ─── Card Footer ─── */
+.protocol-footer {
+    padding: var(--sp-md) var(--sp-xl) var(--sp-xl);
+    display: flex;
+    gap: var(--sp-sm);
+}
+
+.protocol-tags {
+    display: flex;
+    gap: var(--sp-xs);
+    flex-wrap: wrap;
+}
+
+.tag-chip {
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-full);
+    font-size: 0.7rem;
+    font-weight: var(--fw-medium);
+    border: 1px solid var(--clr-border);
+    color: var(--clr-text-dim);
+    background: var(--clr-surface-2);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+    .protocols-grid {
+        grid-template-columns: 1fr;
+    }
+}

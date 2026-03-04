@@ -1,0 +1,226 @@
+/* ===========================================================
+   EXERCISES PAGE STYLES
+   =========================================================== */
+
+.exercises-layout {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--sp-2xl) var(--sp-xl);
+}
+
+/* Filter bar */
+.exercises-filters {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-lg);
+    flex-wrap: wrap;
+    margin-bottom: var(--sp-xl);
+    padding: var(--sp-lg);
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-sm);
+}
+
+.filter-group label {
+    font-size: 0.75rem;
+    font-weight: var(--fw-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--clr-text-muted);
+}
+
+/* Search bar */
+.search-wrapper {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+}
+
+.search-wrapper input {
+    width: 100%;
+    padding-left: 2.5rem;
+}
+
+.search-icon {
+    position: absolute;
+    left: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--clr-text-dim);
+    pointer-events: none;
+}
+
+/* Exercise grid */
+.exercises-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--sp-lg);
+}
+
+/* Exercise card */
+.exercise-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+.exercise-card:hover {
+    border-color: var(--clr-accent);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-4px);
+}
+
+/* Placeholder image / muscle group visual */
+.exercise-img {
+    width: 100%;
+    height: 160px;
+    background: var(--clr-surface-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    border-bottom: 1px solid var(--clr-border);
+    position: relative;
+    overflow: hidden;
+}
+
+.exercise-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--clr-accent-glow) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.exercise-card:hover .exercise-img::after {
+    opacity: 1;
+}
+
+.exercise-body {
+    padding: var(--sp-lg);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.exercise-tags {
+    display: flex;
+    gap: var(--sp-xs);
+    flex-wrap: wrap;
+    margin-bottom: var(--sp-sm);
+}
+
+.exercise-body h3 {
+    font-size: 1rem;
+    font-weight: var(--fw-bold);
+    margin-bottom: var(--sp-sm);
+}
+
+.exercise-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-xs);
+    margin-bottom: var(--sp-md);
+    font-size: 0.8rem;
+    color: var(--clr-text-muted);
+}
+
+.exercise-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.exercise-instructions {
+    font-size: 0.875rem;
+    color: var(--clr-text-muted);
+    line-height: 1.65;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.exercise-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--sp-md);
+    padding-top: var(--sp-md);
+    border-top: 1px solid var(--clr-border);
+    font-size: 0.8rem;
+}
+
+.sets-reps {
+    display: flex;
+    gap: var(--sp-md);
+    color: var(--clr-text-muted);
+}
+
+.sets-reps strong {
+    color: var(--clr-accent);
+    font-size: 0.9rem;
+}
+
+/* Results count */
+.results-count {
+    font-size: 0.875rem;
+    color: var(--clr-text-muted);
+    margin-bottom: var(--sp-lg);
+}
+
+.results-count strong {
+    color: var(--clr-text);
+}
+
+/* Muscle group color map */
+.muscle-chest {
+    color: #ff7b7b;
+}
+
+.muscle-back {
+    color: #7bc8ff;
+}
+
+.muscle-shoulders {
+    color: #ffb347;
+}
+
+.muscle-arms {
+    color: #c77bff;
+}
+
+.muscle-legs {
+    color: #7bffa0;
+}
+
+.muscle-core {
+    color: #ffeb7b;
+}
+
+@media (max-width: 768px) {
+    .exercises-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-wrapper {
+        min-width: unset;
+    }
+
+    .exercises-grid {
+        grid-template-columns: 1fr;
+    }
+}
