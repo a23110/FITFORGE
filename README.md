@@ -1,148 +1,315 @@
-# 💪 FitForge — Fitness Website
+# FitForge 💪
 
-A complete, fully functional fitness website built with **HTML + CSS + Vanilla JS** on the front end and **Python Flask** on the back end. No frameworks, no build tools — just run one command and you're live.
+### A Modern Fitness Training & Workout Tracking Platform
+
+![Python](https://img.shields.io/badge/Python-3.x-blue)
+![Flask](https://img.shields.io/badge/Flask-Web%20Framework-green)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+![Status](https://img.shields.io/badge/Status-Active-brightgreen)
+
+**FitForge** is a full-featured fitness web platform designed to help users build workouts, explore exercises, track progress, and analyze training data.
+
+The project combines **workout planning, exercise libraries, analytics, and nutrition guidance** into a single web application — functioning as a lightweight alternative to training apps like **Hevy** or **Strong**.
 
 ---
 
-## 🚀 Quick Start
+# 🚀 Live Demo
 
-### Prerequisites
-- Python 3.8 or later  
-- `pip` (Python package manager)
+If deployed on Render:
 
-### 1. Install dependencies
-```bash
+```
+https://fitforge.onrender.com
+```
+
+---
+
+# ✨ Features
+
+## 🧮 Fitness Calculators
+
+Quick health estimation tools.
+
+* **BMI Calculator**
+* **Body Fat Percentage Calculator**
+
+Provides instant results using scientifically accepted formulas.
+
+---
+
+## 🏋️ Exercise Library
+
+A large exercise database organized by:
+
+* Muscle group
+* Equipment type
+* Training style
+
+Supported equipment:
+
+* Barbell
+* Dumbbells
+* Machines
+* Cables
+* Resistance Bands
+* Kettlebells
+* Bodyweight
+
+Users can browse exercises and add them directly to workout routines.
+
+---
+
+## 🤸 Calisthenics Training Section
+
+Bodyweight exercises categorized by difficulty:
+
+* Beginner
+* Intermediate
+* Advanced
+
+Includes progressions inspired by calisthenics systems such as:
+
+* Pull-up progressions
+* Push-up progressions
+* Advanced bodyweight strength movements
+
+---
+
+## 🧠 Workout Generator
+
+Automatically generates structured workouts based on:
+
+* Training goals
+* Experience level
+* Muscle groups
+* Available equipment
+
+Example goals:
+
+* Strength
+* Hypertrophy
+* General fitness
+* Calisthenics progression
+
+---
+
+## 📋 Routine Builder
+
+Users can create **unlimited custom routines**.
+
+Features include:
+
+* Add exercises from the exercise library
+* Log sets, reps, and weight
+* Track workout progress
+* Modify routines anytime
+
+Supported set types:
+
+* Warm-up sets
+* Normal sets
+* Drop sets
+* Supersets
+* Failure sets
+
+---
+
+## 📊 Training Analytics
+
+Track workout activity and training patterns.
+
+Analytics include:
+
+* Most trained muscle groups
+* Most frequent exercises
+* Workout statistics
+
+This helps users analyze and optimize their training.
+
+---
+
+## 🥗 Nutrition Guide
+
+A basic nutrition reference section with foods ideal for:
+
+* Muscle gain
+* Fat loss
+* General fitness
+
+Includes macronutrient insights and food recommendations.
+
+---
+
+## 👤 User Accounts
+
+FitForge supports **multi-user authentication**.
+
+Users can:
+
+* Sign up with username and password
+* Log in securely
+* Access personal routines and workout history
+* View their own analytics
+
+Each user’s data is isolated using `user_id` to ensure privacy.
+
+---
+
+# 🧰 Tech Stack
+
+## Backend
+
+* **Python**
+* **Flask**
+
+## Frontend
+
+* HTML
+* CSS
+* JavaScript
+
+## Database
+
+* SQLite
+
+## Deployment
+
+* Gunicorn
+* Render
+
+---
+
+# 📂 Project Structure
+
+```
+FITFORGE
+│
+├── app.py                # Main Flask application
+├── database.py           # Database logic
+├── generate_dataset.py   # Exercise dataset generator
+├── requirements.txt      # Python dependencies
+│
+├── data/                 # Exercise datasets
+│
+├── templates/            # HTML templates
+│   ├── login.html
+│   ├── signup.html
+│   ├── workout.html
+│   └── routines.html
+│
+├── static/               # CSS, JS, images
+│
+└── fitforge.db           # SQLite database
+```
+
+---
+
+# ⚙️ Local Installation
+
+### 1️⃣ Clone the repository
+
+```
+git clone https://github.com/a23110/FITFORGE.git
+cd FITFORGE
+```
+
+---
+
+### 2️⃣ Create a virtual environment
+
+```
+python -m venv venv
+```
+
+Activate it:
+
+**Windows**
+
+```
+venv\Scripts\activate
+```
+
+**Mac/Linux**
+
+```
+source venv/bin/activate
+```
+
+---
+
+### 3️⃣ Install dependencies
+
+```
 pip install -r requirements.txt
 ```
 
-### 2. Run the server
-```bash
+---
+
+### 4️⃣ Run the application
+
+```
 python app.py
 ```
 
-### 3. Open in your browser
+Open:
+
 ```
 http://127.0.0.1:5000
 ```
 
 ---
 
-## 📁 Project Structure
+# 🌍 Deployment
+
+The application can be deployed using **Render**.
+
+### Build Command
 
 ```
-FITNESS WEBSITE/
-├── app.py                     # Flask server — routes + API endpoints
-├── requirements.txt           # Python dependencies (Flask, flask-cors)
-├── README.md
-│
-├── data/
-│   ├── exercises.json         # 35+ exercises with full metadata
-│   ├── nutrition.json         # Foods organized by 4 categories
-│   └── workout_rules.json     # Rule matrix for workout plan generation
-│
-├── static/
-│   ├── css/
-│   │   ├── main.css           # Design system: variables, nav, footer, utilities
-│   │   ├── home.css           # Home page hero + feature cards
-│   │   ├── calculators.css    # BMI + body fat calculator styles
-│   │   ├── exercises.css      # Exercise library card grid + filters
-│   │   ├── workout.css        # Workout generator form + plan output
-│   │   └── nutrition.css      # Nutrition tabs + food cards
-│   ├── js/
-│   │   ├── nav.js             # Mobile hamburger menu toggle
-│   │   ├── bmi.js             # BMI calculator (metric + imperial)
-│   │   ├── bodyfat.js         # Body fat calculator (U.S. Navy formula)
-│   │   ├── exercises.js       # Exercise library — fetch, filter, render
-│   │   ├── workout.js         # Workout generator — API call + plan render
-│   │   └── nutrition.js       # Nutrition guide — tabs + food cards
-│   └── images/                # Image assets (extendable)
-│
-└── templates/
-    ├── index.html             # Home page
-    ├── calculators.html       # BMI + Body Fat calculators
-    ├── exercises.html         # Exercise library
-    ├── workout.html           # Workout generator
-    └── nutrition.html         # Nutrition guide
+pip install -r requirements.txt
 ```
 
----
+### Start Command
 
-## 🌟 Features
-
-| Feature | Details |
-|---|---|
-| **BMI Calculator** | Metric & Imperial support. Color-coded result (Underweight / Normal / Overweight / Obese) with animated scale marker. |
-| **Body Fat Estimator** | U.S. Navy circumference formula. Gender-specific (male/female). Category classification. |
-| **Exercise Library** | 35+ exercises across 6 muscle groups. Filter by muscle group, difficulty, or search by name/keyword. |
-| **Workout Generator** | Select goal (Muscle Gain / Fat Loss / Strength), level (Beginner / Intermediate / Advanced), days/week (3–5), and focus muscle groups. Generates a full week plan with sets/reps/rest. |
-| **Nutrition Guide** | 4 food categories: Muscle Gain, Fat Loss, High Protein Vegetarian, Budget Friendly — with protein, calories, benefits, and best-time-to-eat for every food. |
-
----
-
-## 🔌 API Endpoints
-
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/api/exercises` | All exercises. Filter: `?muscle_group=Chest&difficulty=Beginner` |
-| `GET` | `/api/nutrition` | All nutrition data. Filter: `?category=muscle_gain` |
-| `POST` | `/api/workout` | Generate plan. Body: `{ goal, level, days, muscle_groups }` |
-
-### Example: Generate a workout plan
-```bash
-curl -X POST http://127.0.0.1:5000/api/workout \
-  -H "Content-Type: application/json" \
-  -d '{"goal": "fat_loss", "level": "beginner", "days": 3, "muscle_groups": []}'
+```
+gunicorn app:app
 ```
 
----
 
-## 🔧 Extending the Database
+# 🔒 Security
 
-### Adding new exercises
-Open `data/exercises.json` and append an entry following this schema:
-```json
-{
-  "id": 36,
-  "name": "Your Exercise Name",
-  "muscle_group": "Chest",          
-  "equipment": "Dumbbells",
-  "difficulty": "Beginner",
-  "instructions": "Step-by-step instructions here.",
-  "sets": "3",
-  "reps": "10-12",
-  "image": "/static/images/your-image.svg"
-}
-```
-Valid `muscle_group` values: `Chest`, `Back`, `Shoulders`, `Arms`, `Legs`, `Core`  
-Valid `difficulty` values: `Beginner`, `Intermediate`, `Advanced`
+Security measures implemented:
 
-### Adding new foods
-Open `data/nutrition.json` and add to one of the four arrays:
-```json
-{
-  "name": "Food Name",
-  "protein_g": 25,
-  "calories_per_100g": 200,
-  "benefits": "Why this food is great for your goal.",
-  "best_time": "Post-workout"
-}
-```
+* Password hashing using `werkzeug.security`
+* Session-based authentication
+* User data isolation using `user_id`
 
-### Migrating to a real database (SQLite)
-1. Install `flask-sqlalchemy`: `pip install flask-sqlalchemy`
-2. Define models in `app.py` mirroring the JSON structures
-3. Seed from the existing JSON files on first run
-4. Replace `load_json()` calls with SQLAlchemy queries
+Each user only sees their own routines, workouts, and analytics.
 
----
 
-## 🎨 Customization
 
-- **Colors**: All colors are CSS variables in `static/css/main.css` under `:root`. Change `--clr-accent` to rebrand the entire site instantly.
-- **Fonts**: The Inter font import is at the top of `main.css`. Swap it for any Google Font.
-- **Adding pages**: Create a new template in `templates/`, add a Flask route in `app.py`, and add a nav link in all templates.
+# 📈 Future Improvements
 
----
+Planned improvements include:
 
-## 🛡️ Disclaimer
-The BMI and body fat calculators are informational tools only. Consult a healthcare professional for medical advice.
+* 📅 Workout calendar & streak tracking
+* 📊 Progress graphs
+* 🎥 Exercise demonstration videos
+* 📱 Mobile-first UI
+* 👥 Social training sharing
+
+
+
+# 📜 License
+
+This project is licensed under the **MIT License**.
+
+
+
+# 👨‍💻 Author
+
+**Armaan Sadat**
+
+GitHub
+https://github.com/a23110
+
+
